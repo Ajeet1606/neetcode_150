@@ -25,7 +25,7 @@ public:
 
 /**
  * approach2: priority queue
- * time: O(n)
+ * time: O(nlogn)
  * space: O(k)
 */
 
@@ -53,6 +53,40 @@ public:
             }
             l++;
             r++;
+        }
+        return ans;
+    }
+};
+
+/**
+ * approach3: using deque
+ * time: O(n)
+ * space: O(k)
+*/
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& arr, int k) {
+        int n = arr.size();
+        vector<int>ans;
+        deque<pair<int, int>>cur_window;
+        int l=0, r=0;
+
+        while(r < n){
+            //insert arr[r];
+            while(cur_window.size() and arr[r] > cur_window.back().first){
+                cur_window.pop_back();
+            }
+            cur_window.push_back({arr[r], r});
+            r++;
+            if(r - l == k){
+                ans.push_back(cur_window.front().first);
+                if(arr[l] == cur_window.front().first or cur_window.front().second < l){
+                    cur_window.pop_front();
+                }
+                l++;
+            }
+            
         }
         return ans;
     }
